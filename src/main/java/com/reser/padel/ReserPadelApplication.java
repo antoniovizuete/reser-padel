@@ -18,7 +18,7 @@ public class ReserPadelApplication implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		log.info("Reserva de Pistas de Padelen marcha...");
+		log.info("Reserva de Pistas de Padel en marcha...");
 
 	}
 

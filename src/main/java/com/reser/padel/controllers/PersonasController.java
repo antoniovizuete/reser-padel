@@ -2,6 +2,11 @@ package com.reser.padel.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +21,7 @@ import com.reser.padel.services.PersonaServiceImpl;
 
 @RestController
 @RequestMapping("/personas")
+@Validated
 public class PersonasController {
 
 	PersonaServiceImpl personaServiceImpl;
@@ -26,7 +32,12 @@ public class PersonasController {
 	}
 	
 	@PostMapping
-	public Persona create(@RequestBody Persona persona) {
+	public Persona create(@RequestBody @Valid Persona persona, BindingResult bindingResult) {
+		
+		if (bindingResult.hasErrors()) {
+            throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+		
 		return personaServiceImpl.create(persona);
 	}
 
@@ -36,17 +47,22 @@ public class PersonasController {
 	}
 	
 	@GetMapping("/{email}")
-	public Persona findById(@PathVariable String email) {
+	public Persona findById(@PathVariable @Email String email) {
 		return personaServiceImpl.findById(email);
 	}
 	
 	@PutMapping("/{email}")
-	public Persona update(@PathVariable String email, @RequestBody Persona personaDTO) {
+	public Persona update(@PathVariable @Email String email, @RequestBody @Valid Persona personaDTO, BindingResult bindingResult) {
+		
+		if (bindingResult.hasErrors()) {
+            throw new RuntimeException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+		
 		return personaServiceImpl.update(email, personaDTO);
 	}
 	
 	@DeleteMapping("/{email}")
-	public Persona delete(@PathVariable String email) {
+	public Persona delete(@PathVariable @Email String email) {
 		return personaServiceImpl.delete(email);
 	}
 

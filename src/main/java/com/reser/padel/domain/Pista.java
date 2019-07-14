@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Data;
 
@@ -21,6 +23,7 @@ public class Pista {
 	private Integer id;
   
 	@Column(name = "NOMBRE")
+	@NotEmpty(message = "Se debe proporcionar un nombre a la pista")
 	private String nombre;
   
 	@Column(name = "APERTURA")
@@ -30,6 +33,7 @@ public class Pista {
 	private LocalTime cierre;
   
 	@Column(name = "PRECIO")
+	@DecimalMin(value = "0", message = "Debe indicarse una cantida correcta en el precio")
 	private Double precio;
 	
 }

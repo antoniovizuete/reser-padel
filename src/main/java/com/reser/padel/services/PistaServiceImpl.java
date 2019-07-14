@@ -19,8 +19,6 @@ public class PistaServiceImpl implements PistaService {
 
 	@Override
 	public Pista create(Pista pista) {
-		pistaRepository.findById(pista.getId()).ifPresent(t -> {throw new RuntimeException("Pista " + t.getId() + " ya existe");});
-		
 		return pistaRepository.save(pista);
 	}
 

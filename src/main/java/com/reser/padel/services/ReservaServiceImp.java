@@ -1,9 +1,11 @@
 package com.reser.padel.services;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.reser.padel.domain.Pista;
 import com.reser.padel.domain.Reserva;
 import com.reser.padel.repositories.ReservaRepository;
 
@@ -11,16 +13,24 @@ import com.reser.padel.repositories.ReservaRepository;
 public class ReservaServiceImp implements ReservaService {
 
 	ReservaRepository reservaRepository;
+	PersonaServiceImpl personaService;
+	PistaServiceImpl pistaService;
 		
-	public ReservaServiceImp(ReservaRepository reservaRepository) {
+	public ReservaServiceImp(ReservaRepository reservaRepository, 
+							 PersonaServiceImpl personaService,
+			                 PistaServiceImpl pistaService) {
 		super();
 		this.reservaRepository = reservaRepository;
+		this.personaService = personaService;
+		this.pistaService = pistaService;
 	}
 
 	@Override
 	public Reserva create(Reserva reserva) {
-		reservaRepository.findById(reserva.getId()).ifPresent(t -> {throw new RuntimeException("Reserva " + t.getId() + " ya existe");});
 		
+		personaService.findById(reserva.getPersona().getEmail());
+		validarHorario(reserva.getFecha().toLocalTime(), reserva.getPista());
+
 		return reservaRepository.save(reserva);
 	}
 
@@ -38,6 +48,9 @@ public class ReservaServiceImp implements ReservaService {
 	public Reserva update(Integer id, Reserva reserva) {
 		Reserva reservaUpdate = findById(id);
 		
+		personaService.findById(reserva.getPersona().getEmail());
+		validarHorario(reserva.getFecha().toLocalTime(), reserva.getPista());
+		
 		reservaUpdate.setPersona(reserva.getPersona());
 		reservaUpdate.setPista(reserva.getPista());
 		reservaUpdate.setFecha(reserva.getFecha());
@@ -52,6 +65,19 @@ public class ReservaServiceImp implements ReservaService {
 		reservaRepository.delete(reserva);
 
 		return reserva;
+	}
+	
+	private void validarHorario(LocalTime hora, Pista pista) {
+		
+		Pista pistaReservada = pistaService.findById(pista.getId());
+		
+		LocalTime apertura = pistaReservada.getApertura();
+		LocalTime cierre = pistaReservada.getCierre();
+		
+		if (hora.isBefore(apertura) || hora.isAfter(cierre.minusHours(1))) {
+			throw new RuntimeException("La reserva está fuera del horario de la pista.");
+		}
+
 	}
 
 }
