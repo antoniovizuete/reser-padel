@@ -1,17 +1,20 @@
 package com.everis.cestevez.padel.domain;
 import java.time.LocalDateTime;
 
-// CRUD:
-//  - CREATE: POST
-//  - READ: GET
-//    - All
-//    - 1
-//  - UPDATE: PUT
-//  - DELETE: DELETE
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "reservas")
 public class Reserva {
-  private Integer id;
-  private Persona persona;
-  private Pista pista;
-  private LocalDateTime fecha;
-  private Boolean pagada;
+	@Getter	@Setter	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
+	@Getter	@Setter @OneToOne private Persona persona;
+	@Getter	@Setter @OneToOne private Pista pista;
+	@Getter	@Setter private LocalDateTime fecha;
+	@Getter	@Setter private Boolean pagada;
+
 }
+

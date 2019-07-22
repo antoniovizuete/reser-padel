@@ -10,14 +10,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class PadelApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		SpringApplication.run(PadelApplication.class, args);
 	}
 
-	@Override
 	public void run(String... args) throws Exception {
-		// TODO Auto-generated method stub
 		
 	}
-
 }
