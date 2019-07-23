@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: reser-padel
+Implementation-Version: 1.0-SNAPSHOT
+Built-By: Ruben
+Implementation-Vendor-Id: com.reser.padel
+Build-Jdk: 1.8.0_211
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/reser-padel
+Created-By: Maven Integration for Eclipse
+
