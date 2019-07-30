@@ -11,14 +11,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "RESERVAS", uniqueConstraints={@UniqueConstraint(columnNames={"PERSONA", "PISTA"})})
+@Table(name = "RESERVAS", uniqueConstraints={@UniqueConstraint(columnNames={"PISTA", "FECHA"})})
 public class Reserva {
   
 	@Id
@@ -28,19 +27,21 @@ public class Reserva {
   
 	@OneToOne
 	@JoinColumn(name = "PERSONA", nullable = false)
+	@NotNull(message = "Se debe informar una persona en la reserva")
 	private Persona persona;
   
 	@OneToOne
 	@JoinColumn(name = "PISTA", nullable = false)
+	@NotNull(message = "Se debe informar una pista en la reserva")
 	private Pista pista;
   
-	@Column(name = "FECHA")
+	@Column(name = "FECHA", nullable = false)
+	@NotNull(message = "Se debe informar una fecha y hora de reserva")
 	@FutureOrPresent(message = "La fecha de reserva debe ser a partir de hoy")
 	private LocalDateTime fecha;
   
-	@Column(name = "PAGADA")
-	@Min(value = 0, message = "El valor debe ser 0 o 1")
-	@Max(value = 0, message = "El valor debe ser 0 o 1")
+	@Column(name = "PAGADA", nullable = false)
+	@NotNull(message = "Se debe informar si está pagada la reserva o no")
 	private Boolean pagada;
 	
 }

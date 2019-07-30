@@ -5,4 +5,5 @@ spring.datasource:
   username: root
   password: root
 spring.jpa.hibernate.ddl-auto: none
-spring.jpa.show-sql: true
+reserpadel.carga.inicial: true
+#spring.jpa.show-sql: true
